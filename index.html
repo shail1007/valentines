@@ -22,7 +22,7 @@
       inset: 0;
       background-image: url("us.jpg");
       background-size: cover;
-      background-position: center;
+      background-position: 35% center;
       filter: saturate(1.05) contrast(1.05);
       transform: scale(1.02);
       z-index: -2;
@@ -54,7 +54,7 @@
       background: rgba(255,255,255,0.10);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+      box-shadow: 0 20px 70px rgba(0,0,0,0.45);
     }
 
     h1 {
@@ -165,13 +165,13 @@
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      // place slightly above center so it doesn't sit too low
-      const x = vw * 0.52;
-      const y = vh * 0.55;
+      const x = vw * 0.38; // move LEFT
+      const y = vh * 0.48; // move UP a bit
 
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
     }
+
 
     function moveNoRandom() {
       const vw = window.innerWidth;
@@ -217,11 +217,11 @@
     }
 
     yesBtn.addEventListener("click", () => {
-      msg.textContent = "YAYYY 😭💘 okay princess, you’re locked in.";
+      msg.textContent = "YAYYY 🤩💘 okay princess, you’re locked in.";
 
       details.innerHTML = `
         <div><strong>Meetup:</strong> 15th February at 11AM</div>
-        <div><strong>Location:</strong> why do you wanna know, are you gonna be driving? 🤨</div>
+        <div><strong>Location:</strong> that’s classified info… unless you’re driving 👀🤨</div>
       `;
 
       yesBtn.textContent = "YESSS ✅";
