@@ -20,7 +20,7 @@
     .bg {
       position: fixed;
       inset: 0;
-      background-image: url("us.jpg"); /* <- put your photo named us.jpg next to this file */
+      background-image: url("us.jpg");
       background-size: cover;
       background-position: center;
       filter: saturate(1.05) contrast(1.05);
@@ -28,7 +28,7 @@
       z-index: -2;
     }
 
-    /* Aesthetic overlay for readability */
+    /* Aesthetic overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -38,10 +38,11 @@
       z-index: -1;
     }
 
+    /* Bottom-right placement */
     .wrap {
       height: 100vh;
       display: grid;
-      place-items: center;
+      place-items: end end;           /* bottom-right */
       padding: var(--pad);
       text-align: center;
     }
@@ -58,7 +59,7 @@
 
     h1 {
       margin: 0 0 10px;
-      font-size: clamp(28px, 4.2vw, 44px);
+      font-size: clamp(26px, 3.8vw, 40px);
       letter-spacing: -0.02em;
     }
 
@@ -94,14 +95,14 @@
 
     #yesBtn:hover { transform: translateY(-1px); filter: brightness(1.03); }
 
-    /* No button becomes "floating" */
+    /* Floating No button */
     #noBtn {
       background: rgba(255,255,255,0.92);
       color: #111;
       font-weight: 650;
       position: absolute;
       left: 50%;
-      top: 60%;
+      top: 55%; /* start higher than before */
       transform: translate(-50%, -50%);
     }
 
@@ -160,17 +161,18 @@
 
     function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
 
-    // place "No" somewhere reasonable on load
     function placeNoInitial() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const x = vw * 0.5;
-      const y = vh * 0.68;
+
+      // place slightly above center so it doesn't sit too low
+      const x = vw * 0.52;
+      const y = vh * 0.55;
+
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
     }
 
-    // move "No" to a random safe spot (not off-screen)
     function moveNoRandom() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -184,7 +186,6 @@
       noBtn.style.top  = y + "px";
     }
 
-    // "dodge" behavior: if cursor gets close, scoot away
     function dodge(e) {
       const rect = noBtn.getBoundingClientRect();
       const bx = rect.left + rect.width / 2;
@@ -197,11 +198,9 @@
       const dy = by - my;
       const dist = Math.hypot(dx, dy);
 
-      // how close before it panics
       const panicRadius = 120;
 
       if (dist < panicRadius) {
-        // push it away from cursor direction
         const push = (panicRadius - dist) + 40;
         const nx = dx / (dist || 1);
         const ny = dy / (dist || 1);
@@ -217,7 +216,6 @@
       }
     }
 
-    // YES click
     yesBtn.addEventListener("click", () => {
       msg.textContent = "YAYYY 😭💘 okay princess, you’re locked in.";
 
@@ -231,18 +229,13 @@
       if (shyLine) shyLine.style.display = "none";
     });
 
-    // NO tries: move away
     noBtn.addEventListener("mouseenter", moveNoRandom);
     noBtn.addEventListener("mouseover", moveNoRandom);
 
-    // If they try to click/tap it, it escapes too
     noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNoRandom(); });
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoRandom(); }, { passive: false });
 
-    // Cursor proximity dodge on desktop
     window.addEventListener("mousemove", dodge);
-
-    // keep it on screen if resizing
     window.addEventListener("resize", placeNoInitial);
 
     placeNoInitial();
