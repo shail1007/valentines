@@ -20,7 +20,7 @@
     .bg {
       position: fixed;
       inset: 0;
-      background-image: url("us.jpg"); /* <- change if needed */
+      background-image: url("us.jpg"); /* <- put your photo named us.jpg next to this file */
       background-size: cover;
       background-position: center;
       filter: saturate(1.05) contrast(1.05);
@@ -32,8 +32,9 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(255, 120, 170, 0.20), rgba(0,0,0,0.65) 55%),
-                  linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.70));
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255, 120, 170, 0.20), rgba(0,0,0,0.65) 55%),
+        linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.70));
       z-index: -1;
     }
 
@@ -98,7 +99,7 @@
       background: rgba(255,255,255,0.92);
       color: #111;
       font-weight: 650;
-      position: absolute; /* important for moving */
+      position: absolute;
       left: 50%;
       top: 60%;
       transform: translate(-50%, -50%);
@@ -113,8 +114,16 @@
       min-height: 1.4em;
     }
 
+    #details {
+      margin-top: 10px;
+      font-weight: 650;
+      font-size: 16px;
+      line-height: 1.35;
+      opacity: 0.95;
+    }
+
     .tiny {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 12px;
       opacity: 0.7;
     }
@@ -132,11 +141,11 @@
 
       <div class="btns">
         <button id="yesBtn">Yes 🥰</button>
-        <!-- no button is positioned absolutely, so it doesn't live inside btn row layout -->
       </div>
 
       <div id="msg"></div>
-      <div class="tiny">(btw the “No” button is shy)</div>
+      <div id="details"></div>
+      <div class="tiny" id="shyLine">(btw the “No” button is shy)</div>
     </div>
   </div>
 
@@ -146,6 +155,8 @@
     const yesBtn = document.getElementById("yesBtn");
     const noBtn  = document.getElementById("noBtn");
     const msg    = document.getElementById("msg");
+    const details = document.getElementById("details");
+    const shyLine = document.getElementById("shyLine");
 
     function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
 
@@ -153,11 +164,8 @@
     function placeNoInitial() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const rect = noBtn.getBoundingClientRect();
-
       const x = vw * 0.5;
       const y = vh * 0.68;
-
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
     }
@@ -200,6 +208,7 @@
 
         const vw = window.innerWidth;
         const vh = window.innerHeight;
+
         const nextLeft = clamp(bx + nx * push, 40, vw - 40);
         const nextTop  = clamp(by + ny * push, 40, vh - 40);
 
@@ -210,10 +219,16 @@
 
     // YES click
     yesBtn.addEventListener("click", () => {
-      msg.textContent = "YAYYY 😭💘 okay princess, you’re locked in. Screenshot this and send it to me 😌";
-      // optional: confetti vibe (simple)
+      msg.textContent = "YAYYY 😭💘 okay princess, you’re locked in.";
+
+      details.innerHTML = `
+        <div><strong>Meetup:</strong> 15th February at 11AM</div>
+        <div><strong>Location:</strong> why do you wanna know, are you gonna be driving? 🤨</div>
+      `;
+
       yesBtn.textContent = "YESSS ✅";
       noBtn.style.display = "none";
+      if (shyLine) shyLine.style.display = "none";
     });
 
     // NO tries: move away
@@ -234,4 +249,3 @@
   </script>
 </body>
 </html>
-
